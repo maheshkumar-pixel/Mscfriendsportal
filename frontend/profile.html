@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Profile</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      text-align: center;
+      text-decoration: none;
+    }
+    #container {
+      display: flex;
+      flex-direction: column; /* Fixed spelling */
+      justify-content: space-evenly;
+    }
+    #imageposition{
+         display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  background-color:#f3f3f3;
+    }
+    img {
+      max-width: 200px;
+      margin: 10px;
+    }
+    #profileimage{
+        height:90px;
+        width:90px;
+        border-radius:50%;
+    }
+    a{
+        text-decoration:none;
+        color:white;
+    }
+    #navsection{
+        background-color:black;
+        color:white;
+        
+        display:flex;
+        justify-content:space-evenly;
+    }
+  </style>
+</head>
+<body>
+   <div id="navsection">
+        <a href="/">home</a>
+      <a href="/bio">Update Bio</a>
+      <a href="/photos">Our_memories</a>
+      <a href="/teachers">Faculty_bio</a>
+      <a href="/teachersupdate">Collage_faculty</a>
+      <a href="/acheivers">Acheivers</a>  
+      <a href="/profile">profile</a>
+
+    </div>
+    <marquee direction="left" style="background-color:blueviolet;color:white" >These is the profile section contains uploading of profile, the details updated visibles on these section</marquee>
+
+  <h1 style="color: gray;">Student Profile</h1>
+
+  <div id="container">
+    <div id="imageposition"></div>
+    
+    <div>
+      <label>
+        Update photo:
+        <input type="file" id="image" accept="image/*" />
+        <img id="preview" alt="no-image" style="display:none;" />
+      </label><br/>
+
+      <label>
+        Enter Name:
+        <input type="text" id="name" name="name" placeholder="Enter name" />
+      </label><br/>
+
+      <label>
+        Select Course:
+        <select id="coursesection">
+          <option value="Msc">Msc</option>
+          <option value="Mcom">Mcom</option>
+          <option value="History">History</option>
+          <option value="Arts">Arts</option>
+          <option value="Mca">Mca</option>
+        </select>
+      </label><br/>
+
+      <label>
+        Select Department:
+        <select id="department">
+          <option value="Computerscience">Computer Science</option>
+          <option value="Mathematics">Mathematics</option>
+          <option value="Physics">Physics</option>
+        </select>
+      </label><br/>
+
+      <label>
+        Enter Location:
+        <input type="text" id="location" name="location" placeholder="Enter location" />
+      </label><br/>
+
+      <button onclick="updateProfile()">Update Profile</button>
+    </div>
+  </div>
+
+  <script>
+    
+  const imageInput = document.getElementById('image');
+  const preview = document.getElementById('preview');
+  const imagePosition = document.getElementById('imageposition');
+
+  const nameInput = document.getElementById('name');
+  const courseInput = document.getElementById('coursesection');
+  const deptInput = document.getElementById('department');
+  const locationInput = document.getElementById('location');
+
+  let profileData = {
+    Name: '',
+    Course: '',
+    Department: '',
+    Location: '',
+    image_url: ''
+  };
+
+  // Load data from localStorage if exists
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedData = localStorage.getItem('profileData');
+    if (savedData) {
+      profileData = JSON.parse(savedData);
+
+      // Populate form
+      nameInput.value = profileData.Name;
+      courseInput.value = profileData.Course;
+      deptInput.value = profileData.Department;
+      locationInput.value = profileData.Location;
+
+      if (profileData.image_url) {
+        preview.src = profileData.image_url;
+        preview.style.display = 'block';
+      }
+
+      displayProfile();
+    }
+  });
+
+  // Preview image and store base64
+  imageInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+
+    if (!file) {
+      preview.style.display = 'none';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      preview.src = e.target.result;
+       preview.style.display = 'block'; 
+      profileData.image_url = e.target.result;
+      imageJustUploaded=true;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function updateProfile() {
+    profileData.Name = nameInput.value;
+    profileData.Course = courseInput.value;
+    profileData.Department = deptInput.value;
+    profileData.Location = locationInput.value;
+
+    // Save to localStorage
+    localStorage.setItem('profileData', JSON.stringify(profileData));
+
+    displayProfile();
+  }
+
+  function displayProfile() {
+    imagePosition.innerHTML = `
+      <div>
+        ${profileData.image_url ? `<img id="profileimage" src="${profileData.image_url}" alt="Profile Image" />` : ''}
+        <h2>Name: ${profileData.Name}</h2>
+        <h2>Course: ${profileData.Course}</h2>
+        <h2>Department: ${profileData.Department}</h2>
+        <h2>Location: ${profileData.Location}</h2>
+      </div>
+    `;
+  }
+
+  </script>
+
+</body>
+</html>

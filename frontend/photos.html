@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Friends</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      
+    }
+    
+    #friendsContainer {
+  display: flex;
+  flex-wrap: wrap;         /* Allows wrapping if there are more than 3 */
+  gap: 20px;               /* Space between cards */
+  justify-content: space-between; /* Adjust spacing */
+}
+
+.friend-card {
+  background-color: white;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  width: 30%;     
+  display:flex;
+  justify-content:center;   
+  flex-direction:column;
+        /* 3 cards per row (roughly) */
+  box-sizing: border-box;  /* Includes padding in width */
+}
+
+    .friend-card img {
+      max-width: 200px;
+      height:200px;
+      border-radius: 4px;
+    }
+    .friend-card video {
+      max-width: 300px;
+      max-height:200px;
+      display: block;
+      margin-top: 10px;
+    }
+    #navsection{
+        background-color:black;
+        color:white;
+        
+        display:flex;
+        justify-content:space-evenly;
+    }
+    a{
+        text-decoration:none;
+        color:white;
+    }
+  </style>
+</head>
+<body>
+  <div id="navsection">
+        <a href="/">home</a>
+      <a href="/bio">Update Bio</a>
+      <a href="/photos">Our_memories</a>
+      <a href="/teachers">Faculty_bio</a>
+      <a href="/teachersupdate">Collage_faculty</a>
+      <a href="/acheivers">Acheivers</a>  
+      <a href="/profile">profile</a>
+
+    </div>
+    <marquee direction="left" style="background-color:blueviolet;color:white" >These is the Our_memory section contains  of photos,details.   which makes more interactive section</marquee>
+
+  <h1 style="text-align:center">Our Memories</h1>
+  <div id="friendsContainer">Loading friends...</div>
+
+  <script>
+    async function fetchFriends() {
+      try {
+        const response = await fetch("/api/friends");
+        const data = await response.json();
+        console.log(data);
+        const container = document.getElementById("friendsContainer");
+        container.innerHTML = ""; // Clear loading text
+
+        if (data.length === 0) {
+          container.innerHTML = "<p>No friends data found.</p>";
+          return;
+        }
+
+        data.forEach(friend => {
+          const card = document.createElement("div");
+          card.className = "friend-card";
+
+          card.innerHTML = `
+          ${friend.image_url ? `<img src="/uploads/${friend.image_url}" alt="Image of ${friend.name}" />` : ''}
+           <h3>${friend.name}</h3>
+            <p><strong>First Friend:</strong> ${friend.Firstfriend}</p>
+            <p><strong>Inspiration:</strong> ${friend.inspiration}</p>
+            <p><strong>Opinion:</strong> ${friend.opinion}</p>
+            <p><strong>Batch:</strong> ${friend.batch}</p>
+            ${friend.videofile ? `<video controls src="/uploads/${friend.videofile}"></video>` : ''}
+          
+          <button style="margin-top:10px;" onclick="deleteFriend('${friend._id}', '${friend.image_url || ''}', '${friend.videofile || ''}')">Delete</button>
+`;
+
+
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error("Error fetching friends:", err);
+        document.getElementById("friendsContainer").innerHTML = "<p>Error loading data.</p>";
+      }
+    }
+    async function deleteFriend(id, imageName, videoName) {
+  if (!confirm("Are you sure you want to delete this memory?")) return;
+
+  try {
+    const response = await fetch(`http://localhost:3002/api/friends/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        image_url: imageName,
+        videofile: videoName
+      })
+    });
+
+    const result = await response.json();
+    alert(result.message || "Deleted successfully");
+
+    fetchFriends(); // Reload
+  } catch (err) {
+    console.error("Error deleting friend:", err);
+    alert("Failed to delete friend");
+  }
+}
+
+
+    // Call the function on page load
+    fetchFriends();
+  </script>
+</body>
+</html>

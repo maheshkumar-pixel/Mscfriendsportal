@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Teachers</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      text-align:center;
+      
+    }
+  
+  #achieverslist {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .achiever-card {
+    flex: 0 1 calc(33.33% - 40px); /* 3 cards per row with some spacing */
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    max-width: 300px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+
+  .achiever-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .achiever-card {
+      flex: 0 1 calc(50% - 40px); /* 2 per row on tablets */
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    .achiever-card {
+      flex: 0 1 100%; /* 1 per row on phones */
+    }
+  }
+
+
+    
+    
+    #navsection{
+        background-color:black;
+        color:white;
+        
+        display:flex;
+        justify-content:space-evenly;
+    }
+    a{
+        text-decoration:none;
+        color:white;
+    }
+    #greatonesbutton{
+        padding:5px 5px;
+        background-color:green;
+        color:white;
+    }
+    acheiverscontainer{
+        
+       margin-top:20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="navsection">
+        <a href="/">home</a>
+      <a href="/bio">Update Bio</a>
+      <a href="/photos">Our_memories</a>
+      <a href="/teachers">Faculty_bio</a>
+      <a href="/teachersupdate">Collage_faculty</a>
+      <a href="/acheivers">Acheivers</a>  
+      <a href="/profile">profile</a>
+
+    </div>
+    <marquee direction="left" style="background-color:blueviolet;color:white" >These is the collage acheivers section contains  of photos,details.   which makes more interactive section</marquee>
+
+  <h1 style="text-align:center">COllage acheivers.</h1>
+  <div id="acheiversContainer">
+    <a id="greatonesbutton" href="/greatones">Update Acheivers.</a>
+    </div>
+    <div id="achieverslist" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;"></div>
+  
+
+  <script>
+    // Fetch and display achievers on page load
+async function fetchAchievers() {
+  try {
+    const res = await fetch('/api/acheivement');
+    const acheievers = await res.json();
+
+    const container = document.getElementById('achieverslist');
+    container.innerHTML = ''; // Clear existing
+
+  acheievers.forEach((item) => {
+  const card = document.createElement('div');
+  card.classList.add('achiever-card'); // apply class
+
+  card.innerHTML = `
+    <img src="${item.imageUrl}" alt="${item.name}" />
+    <h3 style="margin: 10px 0 5px 0; font-size: 18px;">${item.name}</h3>
+    <p><strong>Batch:</strong> ${item.batch}</p>
+    <p><strong>Achievement:</strong> ${item.achievement}</p>
+    <p><strong>Year:</strong> ${item.year}</p>
+  `;
+
+  container.appendChild(card);
+});
+
+
+  } catch (err) {
+    console.error("Failed to fetch achiever data:", err);
+  }
+}
+
+// Call fetch function on page load
+window.onload = fetchAchievers;
+
+    
+  </script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Teachers</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      
+    }
+    
+    #friendsContainer {
+  display: flex;
+  flex-wrap: wrap;         /* Allows wrapping if there are more than 3 */
+  gap: 20px;               /* Space between cards */
+  justify-content: space-between; /* Adjust spacing */
+}
+
+.friend-card {
+  background-color: white;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  width: 30%;     
+  display:flex;
+  justify-content:center;   
+  flex-direction:column;
+        /* 3 cards per row (roughly) */
+  box-sizing: border-box;  /* Includes padding in width */
+}
+
+    .friend-card img {
+      max-width: 200px;
+      height:200px;
+      border-radius: 4px;
+    }
+    .friend-card video {
+      max-width: 300px;
+      max-height:200px;
+      display: block;
+      margin-top: 10px;
+    }
+    #navsection{
+        background-color:black;
+        color:white;
+        
+        display:flex;
+        justify-content:space-evenly;
+    }
+    a{
+        text-decoration:none;
+        color:white;
+    }
+  </style>
+</head>
+<body>
+  <div id="navsection">
+        <a href="/">home</a>
+      <a href="/bio">Update Bio</a>
+      <a href="/photos">Our_memories</a>
+      <a href="/teachers">Faculty_bio</a>
+      <a href="/teachersupdate">Collage_faculty</a>
+      <a href="/acheivers">Acheivers</a>  
+      <a href="/profile">profile</a>
+
+    </div>
+    <marquee direction="left" style="background-color:blueviolet;color:white" >These is the collage faculty section contains  of photos,details.   which makes more interactive section</marquee>
+
+  <h1 style="text-align:center">Collage_faculty</h1>
+  <div id="friendsContainer">Loading friends...</div>
+
+  <script>
+    async function fetchTeachers() {
+      try {
+        const response = await fetch("/api/teachers");
+        const data = await response.json();
+        console.log(data);
+        const container = document.getElementById("friendsContainer");
+        container.innerHTML = ""; // Clear loading text
+
+        if (data.length === 0) {
+          container.innerHTML = "<p>No teachers data found.</p>";
+          return;
+        }
+
+        data.forEach(teacher => {
+          const card = document.createElement("div");
+          card.className = "friend-card";
+
+          card.innerHTML = `
+          ${teacher.image_url ? `<img src="/uploads/${teacher.image_url}" alt="Image of ${teacher.name}" />` : ''}
+           <h3>Name:${teacher.name}</h3>
+            <p><strong>Designation:</strong> ${teacher.designation}</p>
+            <p><strong>Educationaldetails::</strong> ${teacher.educationaldetails}</p>
+            <p><strong>Year of joining:</strong> ${teacher.joindate}</p>
+            <button onclick="deleteTeacher('${teacher._id}', '${teacher.image_url || ''}')">Delete</button>
+
+          `;
+
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error("Error fetching friends:", err);
+        document.getElementById("friendsContainer").innerHTML = "<p>Error loading data.</p>";
+      }
+    }
+
+    // Call the function on page load
+    fetchTeachers();
+    async function deleteTeacher(id, imageName) {
+  if (!confirm("Are you sure you want to delete this teacher?")) return;
+
+  try {
+    const response = await fetch(`http://localhost:3002/api/teachers/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ image_url: imageName })  // Pass image name to delete file
+    });
+
+    const result = await response.json();
+    alert(result.message || "Deleted successfully");
+
+    // Reload the teacher list
+    fetchTeachers();
+  } catch (err) {
+    console.error("Error deleting teacher:", err);
+    alert("Error deleting teacher");
+  }
+}
+
+  </script>
+</body>
+</html>

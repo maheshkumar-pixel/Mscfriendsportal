@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friends Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            color: blueviolet;
+            text-align: center;
+            background-image: url('images/gfgc1.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        #navsection {
+            background-color: black;
+            color: white;
+            display: flex;
+            justify-content: space-evenly;
+            padding: 10px 0;
+        }
+
+        #bio_anchor {
+            background-color: green;
+            color: white;
+            text-decoration: none;
+            margin: 40px auto 80px auto;
+            display: block;
+            width: fit-content;
+            padding: 10px 20px;
+            border-radius: 6px;
+        }
+
+        #infoslider {
+            width: 100%;
+            overflow: hidden;
+            background-color: #f8f8f8;
+            border: 2px solid #ddd;
+            position: relative;
+            height: 150px;
+            margin-top: 20px;
+        }
+
+        #slidetrack {
+            display: flex;
+            width: max-content;
+            animation: scroll-left 30s linear infinite;
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .infocontainer {
+            min-width: 250px;
+            height: 130px;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 3px 5px 3px 3px black;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            white-space: normal;
+            margin-left: 10px;
+        }
+
+        #profileupdate {
+            color: white;
+            padding: 5px 10px;
+            background-color: blueviolet;
+            text-decoration: none;
+            margin-top: 20px;
+            display: inline-block;
+            border-radius: 4px;
+        }
+
+        /* Background images for each container */
+        #infocontainer1 { background-image: url('images/friendphoto1.jpg'); }
+        #infocontainer2 { background-image: url('images/friend2.jpg'); }
+        #infocontainer3 { background-image: url('images/friendphoto3.jpg'); }
+        #infocontainer4 { background-image: url('images/friendphoto4.jpg'); }
+        #infocontainer5 { background-image: url('images/friendphoto7.jpg');
+     
+  }
+        #infocontainer6 { background-image: url('images/friendphoto6.jpg'); }
+         #infocontainer7 { background-image: url('images/friendphoto5.jpg'); }
+
+        h1, h2 {
+            background-color: white;
+            color: black;
+            
+        }
+
+        
+
+        #preview {
+            height: 300px;
+            width: 500px;
+            object-fit: cover;
+            display: block;
+            margin: 20px auto;
+            border: 3px solid white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div id="navsection">
+        <a href="/">Home</a>
+        <a href="/bio">Update Bio</a>
+        <a href="/photos">Our Memories</a>
+        <a href="/teachers">Faculty Bio</a>
+        <a href="/teachersupdate">College Faculty</a>
+        <a href="/acheivers">Achievers</a>
+        <a href="/profile">Profile</a>
+    </div>
+
+    <!-- Marquee -->
+    <marquee direction="left" style="background-color: blueviolet; color: white;">
+        This is the MSc Friends Portal - filled with great memories and sections that make our friendship eternal forever!
+    </marquee>
+
+    <!-- Header -->
+    <h1>MSc Friends Portal</h1>
+
+    <!-- Info Slider Section -->
+    <div id="infoslider">
+        <div id="slidetrack">
+            <!-- Original Slides -->
+            <div class="infocontainer" id="infocontainer1"><h2>Our Memories: Photos updated in bio will be visible</h2></div>
+            <div class="infocontainer" id="infocontainer2"><h2>Update Bio: Update your bio here</h2></div>
+            <div class="infocontainer" id="infocontainer3"><h2>Faculty: Info about teachers</h2></div>
+            <div class="infocontainer" id="infocontainer4"><h2>Faculty Bio: Update teachers' bio here</h2></div>
+            <div class="infocontainer" id="infocontainer5"><h2>Achievers: Friends who achieved awards</h2></div>
+            <div class="infocontainer" id="infocontainer6"><h2>Profile: Update your profile here</h2></div>
+            <div class="infocontainer" id="infocontainer7"><h2>Home: these is the content section.</h2></div>
+
+
+            <!-- Duplicated Slides for Infinite Scroll -->
+            <div class="infocontainer" id="infocontainer1"><h2>Our Memories: Photos updated in bio will be visible</h2></div>
+            <div class="infocontainer" id="infocontainer2"><h2>Update Bio: Update your bio here</h2></div>
+            <div class="infocontainer" id="infocontainer3"><h2>Faculty: Info about teachers</h2></div>
+            <div class="infocontainer" id="infocontainer4"><h2>Faculty Bio: Update teachers' bio here</h2></div>
+            <div class="infocontainer" id="infocontainer5"><h2>Achievers: Friends who achieved awards</h2></div>
+            <div class="infocontainer" id="infocontainer6"><h2>Profile: Update your profile here</h2></div>
+            <div class="infocontainer" id="infocontainer7"><h2>Home: these is the content section.</h2></div>
+
+        </div>
+    </div>
+
+    <!-- Profile Section -->
+    <a id="profileupdate" href="/profile">Update your profile</a>
+
+    <!-- Preview Image -->
+    <img id="preview" src="images/friendphoto6.jpg" alt="Image not found">
+
+    <!-- Update Bio Button -->
+    <a id="bio_anchor" href="/bio">Update Bio Now!!</a>
+</body>
+</html>

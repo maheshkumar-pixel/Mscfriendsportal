@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bio Page</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      color: blueviolet;
+      background-image: url('images/gfgc1.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      min-height: 100vh;
+      padding: 0 10px;
+    }
+
+    #navsection {
+      background-color: black;
+      color: white;
+      display: flex;
+      justify-content:space-evenly;
+    
+      
+    }
+
+    #navsection a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    #navsection a:hover {
+      color: #cccccc;
+    }
+
+    marquee {
+      background-color: blueviolet;
+      color: white;
+
+      font-weight: bold;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+      color: indigo;
+      text-shadow: 1px 1px #fff;
+    }
+
+    #biosection {
+      background-color: rgba(243, 243, 243, 0.95);
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      margin: 30px auto;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #biosection label {
+      display: block;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    #biosection input[type="text"],
+    #biosection textarea,
+    #biosection input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    #biosection textarea {
+      resize: vertical;
+      height: 80px;
+    }
+
+    #preview {
+      display: none;
+      max-height: 150px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      display: block;
+      margin: 0 auto 30px;
+      padding: 12px 30px;
+      background-color: blueviolet;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: indigo;
+    }
+
+    @media (max-width: 500px) {
+      #biosection {
+        width: 95%;
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="navsection">
+    <a href="/">Home</a>
+    <a href="/bio">Update Bio</a>
+    <a href="/photos">Our Memories</a>
+    <a href="/teachers">Faculty Bio</a>
+    <a href="/teachersupdate">College Faculty</a>
+    <a href="/acheivers">Achievers</a>
+    <a href="/profile">Profile</a>
+  </div>
+
+  <marquee direction="left">
+    This is the Bio section for uploading photos and details. Your content will be visible on the Our Memories section.
+  </marquee>
+
+  <h1 style="background-color:white">Update Your Memories Here</h1>
+
+  <div id="biosection">
+    <label>
+      Enter Name:
+      <input type="text" id="name" placeholder="Enter name" required />
+    </label>
+
+    <label>
+      1st Friend You Met in College:
+      <input type="text" id="firstfriend" placeholder="Enter your 1st friend" required />
+    </label>
+
+    <label>
+      Your Inspiration:
+      <input type="text" id="inspiration" placeholder="Enter your inspiration" required />
+    </label>
+
+    <label>
+      Your Opinion:
+      <textarea id="opinion" placeholder="Enter your opinion" required></textarea>
+    </label>
+    <label>Batch:
+    <select id="batch">
+      <option value="2024-2026">2024-2026</option>
+      <option value="2023-2025">2023-2025</option>
+      <option value="2022-2024">2022-2024</option>
+      <option value="2021-2023">2021-2023</option>
+      <option value="2020-2022">2020-2022</option>
+      <option value="2019-2021">2019-2021</option>
+    </select>
+    </label>
+
+    <label>
+      Enter Photo:
+      <input type="file" id="image" accept="image/*" required />
+      <img id="preview" alt="Image preview" />
+    </label>
+
+    <label>
+      Enter Video File:
+      <input type="file" id="videofile" accept="video/*" />
+    </label>
+  </div>
+
+  <button onclick="submit()">Submit</button>
+
+  <script>
+    // Show image preview
+    document.getElementById('image').addEventListener('change', function () {
+      const file = this.files[0];
+      const preview = document.getElementById('preview');
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          preview.src = e.target.result;
+          preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      } else {
+        preview.src = '';
+        preview.style.display = 'none';
+      }
+    });
+
+    // Submit form
+    async function submit() {
+      const name = document.getElementById('name').value.trim();
+      const firstfriend = document.getElementById('firstfriend').value.trim();
+      const inspiration = document.getElementById('inspiration').value.trim();
+      const opinion = document.getElementById('opinion').value.trim();
+      const batch=document.getElementById('batch').value;
+      const imageFile = document.getElementById('image').files[0];
+      const videoFile = document.getElementById('videofile').files[0];
+
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('firstfriend', firstfriend);
+      formData.append('inspiration', inspiration);
+      formData.append('opinion', opinion);
+      formData.append('batch', batch);
+      if (imageFile) formData.append('image', imageFile);
+      if (videoFile) formData.append('videofile', videoFile);
+
+      try {
+        const res = await fetch("/api/friends", {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        alert(data.message);
+
+        // Reset form
+        document.getElementById('name').value = '';
+        document.getElementById('firstfriend').value = '';
+        document.getElementById('inspiration').value = '';
+        document.getElementById('opinion').value = '';
+          document.getElementById('batch').selectedIndex = 0;
+        document.getElementById('image').value = '';
+        document.getElementById('videofile').value = '';
+        document.getElementById('preview').src = '';
+        document.getElementById('preview').style.display = 'none';
+      } catch (err) {
+        console.error("Unable to store data:", err);
+        alert("Failed to save data");
+      }
+    }
+  </script>
+</body>
+</html>

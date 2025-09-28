@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bio Page</title>
+</head>
+<style>
+    *{
+        margin:0px;
+        padding:0px;
+    }
+    body{
+        font-family: Arial, sans-serif;
+      color: blueviolet;
+      background-image: url('images/gfgc1.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      min-height: 100vh;
+      padding: 0 10px;
+        
+
+    }
+    
+    
+    a{
+        text-decoration:none;
+        color:white;
+    }
+    #navsection{
+        background-color:black;
+        color:white;
+        
+        display:flex;
+        justify-content:space-evenly;
+    }
+     #teachersection {
+      margin: 20px auto;
+      padding: 15px;
+      height: auto;
+      width: 300px;
+      background-color: #f3f3f3;
+      border-radius: 10px;
+    }
+
+    #teachersection label {
+      display: block;
+      margin: 10px 0;
+    }
+
+    input, select {
+      margin-top: 5px;
+      padding: 5px;
+      width: 90%;
+    }
+    button {
+      display: block;
+      margin: 0 auto 30px;
+      padding: 12px 30px;
+      background-color: blueviolet;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: indigo;
+    }
+
+    @media (max-width: 500px) {
+      #biosection {
+        width: 95%;
+        padding: 15px;
+      }
+    }
+  
+</style>
+<body>
+    <div id="navsection">
+        <a href="/">home</a>
+      <a href="/bio">Update Bio</a>
+      <a href="/photos">Our_memories</a>
+      <a href="/teachers">Faculty_bio</a>
+      <a href="/teachersupdate">Collage_faculty</a>
+      <a href="/acheivers">Acheivers</a>  
+      <a href="/profile">profile</a>
+
+    </div>
+    <marquee direction="left" style="background-color:blueviolet;color:white" >These is the Teachers section contains uploading of details,photos. photos visible on teacher_profile section</marquee>
+  <h1 style="background-color:white; text-align:center">Update your details here</h1>
+
+  <label>
+    <div id="teachersection">
+    Enter Name:
+    <input type="text" id="name" placeholder="Enter name" required />
+  </label>
+  <br />
+
+  <label>
+    Designation
+    <input type="text" id="designation" placeholder="Enter designation" required />
+  </label>
+  <br />
+
+  <label>
+    Enter Educational details:
+    <input type="text" id="educationalinfo" placeholder="Enter educational details" />
+  </label>
+  <br />
+  <label>
+      Year of Joining:
+      <select id="joindate">
+        
+        <option value="2025">2025</option>
+        <option value="2024">2025</option>
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+        <option value="2021">2021</option>
+        <option value="2020">2020</option>
+        <option value="2019">2019</option>
+        <option value="2018">2018</option>
+        <option value="2017">2017</option>
+      </select>
+
+    </label>
+
+  <label>
+    Enter Photo:
+    <input type="file" id="image" accept="image/*" required />
+    <br />
+    <img id="preview" alt="Image preview" style="max-height: 150px; display: none;" />
+  </label>
+  <br />
+  
+</div>
+  <button onclick="submit()">Submit</button>
+
+  <script>
+  
+
+    async function submit() {
+    const name = document.getElementById('name').value.trim();
+    const designation = document.getElementById('designation').value.trim();
+    const educatinalinfo = document.getElementById('educationalinfo').value.trim();
+    const joindate=document.getElementById('joindate').value;
+    const imageFile = document.getElementById('image').files[0];
+  
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('designation',designation);
+    formData.append('educationalinfo', educationalinfo);
+     formData.append('joindate',joindate);
+    if (imageFile) formData.append('image', imageFile);
+
+    try {
+        const res = await fetch("/api/teachers", {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+        alert(data.message);
+
+        // Reset form
+        document.getElementById('name').value = '';
+        document.getElementById('designation').value = '';
+        document.getElementById('educationalinfo').value = '';
+        document.getElementById('joindate').selectedIndex = 0;
+        document.getElementById('image').value = '';
+        preview.src = '';
+        preview.style.display = 'none';
+    } catch (err) {
+        console.error("Unable to store data:", err);
+        alert("Failed to save data");
+    }
+}
+
+  </script>
+</body>
+</html>
