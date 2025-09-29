@@ -99,18 +99,17 @@ app.post("/api/friends", upload.fields([
         res.status(500).json({ error: "Failed to save data" });
     }
 });
-app.delete('/api/friends/:id', async (req, res) => {
+
+app.post('/api/delete-friend/:id', async (req, res) => {
   try {
     const friendId = req.params.id;
     const { image_url, videofile } = req.body;
 
-    // Delete friend from DB
     const deleted = await friends.findByIdAndDelete(friendId);
     if (!deleted) {
       return res.status(404).json({ error: 'Friend not found' });
     }
 
-    // Delete image if exists
     if (image_url) {
       const imagePath = path.join(__dirname, 'uploads', image_url);
       if (fs.existsSync(imagePath)) {
@@ -118,7 +117,6 @@ app.delete('/api/friends/:id', async (req, res) => {
       }
     }
 
-    // Delete video if exists
     if (videofile) {
       const videoPath = path.join(__dirname, 'uploads', videofile);
       if (fs.existsSync(videoPath)) {
@@ -132,6 +130,7 @@ app.delete('/api/friends/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to delete friend' });
   }
 });
+
 
 app.post("/api/teachers", upload.single('image'), async (req, res) => {
     try {
@@ -161,7 +160,9 @@ app.post("/api/teachers", upload.single('image'), async (req, res) => {
         res.status(500).json({ error: "Failed to save data" });
     }
 });
-app.delete('/api/teachers/:id', async (req, res) => {
+
+
+app.post('/api/delete-teacher/:id', async (req, res) => {
   try {
     const teacherId = req.params.id;
     const { image_url } = req.body;
@@ -187,6 +188,7 @@ app.delete('/api/teachers/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to delete teacher' });
   }
 });
+
 
 app.post("/api/acheivement", upload.single('image'), async (req, res) => {
     try {
@@ -271,4 +273,5 @@ const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
 
