@@ -117,8 +117,8 @@
   if (!confirm("Are you sure you want to delete this memory?")) return;
 
   try {
-    const response = await fetch(`/api/friends/${id}`, {
-      method: 'DELETE',
+    const response = await fetch(`/api/delete-friend/${id}`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -144,5 +144,6 @@
   </script>
 </body>
 </html>
+
 
 
